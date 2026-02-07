@@ -11,7 +11,7 @@ import { generatePRDescription } from "./prDescriptionGenerator";
 function safeExec(command: string, cwd: string) {
   try {
     return execSync(command, { cwd, stdio: "inherit" });
-  } catch {
+  } catch (err) {
     throw new Error(`Git command failed: ${command}`);
   }
 }
@@ -24,22 +24,14 @@ export function runGitCommands(
   repoPath: string,
   problemName: string
 ) {
-
   try {
-
     const branch = getDefaultBranch(repoPath);
 
     safeExec(`git checkout ${branch}`, repoPath);
     safeExec(`git pull origin ${branch}`, repoPath);
 
-    // ✅ SAFE STAGING
-    safeExec(`git add "${problemName}"`, repoPath);
-
-    safeExec(
-      `git commit -m "Add solution ${problemName}"`,
-      repoPath
-    );
-
+    safeExec(`git add .`, repoPath);
+    safeExec(`git commit -m "Add solution ${problemName}"`, repoPath);
     safeExec(`git push origin ${branch}`, repoPath);
 
   } catch (err: any) {
@@ -64,24 +56,51 @@ export function runGitCommandsWithPR(
   authorGithub: string,
   solutionFileName: string
 ) {
-
   try {
-
     const baseBranch = getDefaultBranch(repoPath);
+
+    /* ============================= */
+    /* SYNC BASE BRANCH              */
+    /* ============================= */
 
     safeExec(`git checkout ${baseBranch}`, repoPath);
     safeExec(`git pull origin ${baseBranch}`, repoPath);
 
+    /* ============================= */
+    /* DELETE LOCAL BRANCH IF EXISTS */
+    /* ============================= */
+
+    try {
+      safeExec(`git branch -D ${branchName}`, repoPath);
+    } catch {
+      // branch does not exist locally — ignore
+    }
+
+    /* ============================= */
+    /* DELETE REMOTE BRANCH IF EXISTS*/
+    /* ============================= */
+
+    try {
+      safeExec(`git push origin --delete ${branchName}`, repoPath);
+    } catch {
+      // branch does not exist remotely — ignore
+    }
+
+    /* ============================= */
+    /* CREATE FRESH FEATURE BRANCH   */
+    /* ============================= */
+
     safeExec(`git checkout -b ${branchName}`, repoPath);
 
-    // ✅ SAFE STAGING
-    safeExec(`git add "${problemName}"`, repoPath);
+    /* ============================= */
+    /* COMMIT & PUSH                */
+    /* ============================= */
 
+    safeExec(`git add .`, repoPath);
     safeExec(
       `git commit -m "Add solution ${problemName}"`,
       repoPath
     );
-
     safeExec(
       `git push -u origin ${branchName}`,
       repoPath
@@ -111,7 +130,6 @@ export function runGitCommandsWithPR(
     const repoInfoResult = getRepoInfo(repoPath);
 
     if (repoInfoResult.ok) {
-
       const prUrl =
         `https://github.com/${repoInfoResult.data.owner}/${repoInfoResult.data.repo}` +
         `/compare/${baseBranch}...${branchName}?expand=1`;
