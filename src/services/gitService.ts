@@ -31,7 +31,10 @@ export function runGitCommands(
     safeExec(`git pull origin ${branch}`, repoPath);
 
     safeExec(`git add .`, repoPath);
-    safeExec(`git commit -m "Add solution ${problemName}"`, repoPath);
+    safeExec(
+      `git commit -m "Add solution and documentation for ${problemName}"`,
+      repoPath
+    );
     safeExec(`git push origin ${branch}`, repoPath);
 
   } catch (err: any) {
@@ -98,7 +101,7 @@ export function runGitCommandsWithPR(
 
     safeExec(`git add .`, repoPath);
     safeExec(
-      `git commit -m "Add solution ${problemName}"`,
+      `git commit -m "Add solution and documentation for ${problemName}"`,
       repoPath
     );
     safeExec(
@@ -110,13 +113,17 @@ export function runGitCommandsWithPR(
     /* PR DESCRIPTION GENERATION     */
     /* ============================= */
 
+    const normalizedAuthorGithub = authorGithub.startsWith("http")
+      ? authorGithub
+      : `https://github.com/${authorGithub}`;
+
     const prDescription = generatePRDescription(
       problemName,
       executionTime,
       problemType,
       difficulty,
       authorName,
-      authorGithub,
+      normalizedAuthorGithub,
       solutionFileName,
       "README.md"
     );

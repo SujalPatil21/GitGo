@@ -2,7 +2,7 @@ import * as vscode from "vscode";
 
 export async function askBranchName(): Promise<string> {
   const name = await vscode.window.showInputBox({
-    prompt: "Enter branch name (e.g., add-231-power-of-two)",
+    prompt: "Enter new branch name (e.g., feature/add-solution)",
     ignoreFocusOut: true
   });
 
