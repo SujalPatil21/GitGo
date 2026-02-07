@@ -3,7 +3,7 @@
   "displayName": "GitGo",
   "publisher": "RuntimeSync",
   "description": "Publish coding solutions to GitHub with one command",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "icon": "assets/icon.png",
 
   "repository": {

@@ -28,13 +28,18 @@ export async function getOrCreateAuthor(): Promise<Author> {
 
   if (!github) {
     github = await vscode.window.showInputBox({
-      prompt: "Enter GitHub profile URL",
+      prompt: "Enter GitHub profile URL or username",
       ignoreFocusOut: true
     });
 
     if (!github) {
       throw new Error("GitHub link required");
     }
+
+    // ✅ Normalize GitHub input
+    github = github.startsWith("http")
+      ? github
+      : `https://github.com/${github}`;
 
     await config.update(
       "author.github",
