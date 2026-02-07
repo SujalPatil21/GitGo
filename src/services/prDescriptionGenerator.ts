@@ -9,104 +9,110 @@ export function generatePRDescription(
   readmeFile: string
 ): string {
 
-return `# Title
-Add solution for ${problemName}
+  // Extract GitHub username from URL
+  const githubUsername = authorGithub
+    ? authorGithub.replace("https://github.com/", "").replace("/", "")
+    : "";
+
+  return `# Title
+Add solution and documentation for ${problemName}
 
 ---
 
 ## Summary
-Adds a new solution implementation and README for **${problemName}** following repository standards.
+This pull request adds a new solution along with its corresponding documentation.
+
+The implementation follows the repository’s standard structure and focuses on correctness, clarity, and consistency.
 
 ---
 
-## ⏱ Execution Time
+## Execution Time
 ${executionTime || "N/A"}
 
 ---
 
-## 📌 Problem Metadata
+## Purpose / Context
+The purpose of this contribution is to:
 
-| Field | Value |
-|-----|------|
-| Problem Name | ${problemName} |
-| Problem Type | ${problemType} |
-| Difficulty | ${difficulty || "N/A"} |
-| Language | Auto-detected |
+- Implement a working solution for the given problem  
+- Maintain a consistent and organized repository structure  
+- Improve readability and traceability of solutions  
+- Document the approach for future reference  
 
----
-
-## 🎯 Purpose / Context
-
-| Goal | Explanation |
-|----|-------------|
-| Practice DSA | Reinforce problem-solving skills |
-| Improve Patterns | Apply known algorithmic techniques |
-| Maintain Consistency | Follow standardized repo structure |
+This change ensures the solution is easy to understand and reuse.
 
 ---
 
-## 🧠 Overview of Implementation
-
-| Step | Description |
-|-----|------------|
-| 1 | Read input data |
-| 2 | Choose suitable algorithm |
-| 3 | Apply logic step-by-step |
-| 4 | Compute result |
-| 5 | Return output |
+## Overview of Implementation
+- Implemented the core logic to solve the problem.  
+- Followed a clear, step-by-step approach.  
+- Ensured the solution handles standard and edge cases.  
+- Returned the expected output as per the problem requirements.
 
 ---
 
-## 🏗 Design Considerations
+## Key Design Points
+
+### Clear Logic Flow
+- Logic is written in a straightforward and traceable manner.  
+- Steps are easy to follow and debug.
+
+### Maintainability
+- Code is structured to be readable and reusable.  
+- Avoids unnecessary complexity.
+
+### Safety
+- Does not introduce side effects unless required.  
+- Input handling follows expected constraints.
+
+---
+
+## Comparison / Rationale
+
+### Current Implementation
+- Prioritizes clarity and correctness.  
+- Suitable for learning, review, and maintenance.
+
+### Alternative Approaches
+- Other approaches may improve performance or resource usage.  
+- The chosen approach balances simplicity and reliability.
+
+---
+
+## Trade-offs
 
 | Aspect | Decision |
 |------|---------|
 | Readability | Prioritized |
-| Maintainability | High |
-| Input Mutation | Avoided |
-| Simplicity | Preferred over micro-optimizations |
+| Performance | Acceptable |
+| Complexity | Kept minimal |
+| Extensibility | High |
 
 ---
 
-## ⚖ Trade-offs
-
-| Option | Time | Space | Notes |
-|------|-----|------|------|
-| Current Approach | O(n) | O(n) | Clear and safe |
-| In-place Variant | O(n) | O(1) | Mutates input |
+## Files Added / Modified
+- ${solutionFile} — Solution implementation  
+- ${readmeFile} — Documentation
 
 ---
 
-## ⚙ Complexity
-
-| Metric | Value |
-|------|------|
-| Time Complexity | O(n) |
-| Space Complexity | O(n) |
+## How to Test
+1. Run the solution with sample inputs.  
+2. Verify the output matches expected results.  
+3. Test edge cases where applicable.
 
 ---
 
-## 🧪 Testing
-
-| Case | Status |
-|----|-------|
-| Sample Input | Passed |
-| Edge Cases | Passed |
-| Large Input | Passed |
+## Notes
+- Implementation follows repository conventions.  
+- Can be optimized or extended in future iterations.
 
 ---
 
-## 📂 Files
+## Author
 
-| File | Description |
-|-----|-------------|
-| ${problemName}/${solutionFile} | Solution implementation |
-| ${problemName}/${readmeFile} | Problem README |
+**${authorName}**
 
----
-
-## 👨‍💻 Author
-**${authorName}**  
-${authorGithub}
+[![GitHub](https://img.shields.io/badge/GitHub-${githubUsername}-blue)](${authorGithub})
 `;
 }
