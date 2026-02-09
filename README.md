@@ -301,7 +301,7 @@ No repeated setup.
 - Sujal Patil – https://github.com/SujalPatil21  
 - Shreya Awari – https://github.com/shreyaawari28  
 - Tejas Halvankar – https://github.com/Tejas-H01  
-- Nihal Mishra – https://github.com/nihal27998  
+- Nihal Mishra – https://github.com/NihalMishra3009 
 
 ---
 
