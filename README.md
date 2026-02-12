@@ -286,6 +286,116 @@ No repeated setup.
 
 ---
 
+## Architecture
+
+GitGo follows a layered, pipeline-driven architecture centered around a single atomic publishing workflow.
+
+The system is orchestrated by a **Publish Pipeline Orchestrator**, which coordinates metadata collection, file preparation, README generation, screenshot handling, and Git operations in a deterministic and transactional sequence.
+
+### Unified System Architecture
+
+![GitGo Unified Architecture Diagram](./architecture.png)
+
+---
+
+### Architectural Overview
+
+#### 1. Entry Layer
+- VS Code Extension Host  
+- `GitGo: Publish Solution` command  
+- Command registration and activation  
+
+#### 2. Application Layer
+- **Publish Pipeline Orchestrator**
+  - Controls complete execution flow  
+  - Ensures ordered stage execution  
+  - Handles success/failure resolution  
+  - Enforces atomic transaction model  
+
+#### 3. Context Building Layer
+Builds a single `PublishContext` object used across all stages.
+
+Includes:
+- Problem Type Selector  
+- Difficulty Prompt  
+- Execution Time Prompt  
+- Parent Folder Selector  
+- Push Mode Selector  
+- Author Prompt  
+
+Output:
+- `PublishContext`
+  - Problem metadata  
+  - Author details  
+  - Push mode  
+  - Repository path  
+  - Language  
+  - File paths  
+
+---
+
+#### 4. Pipeline Stages
+
+**Stage 1 — Directory Preparation**
+- FolderCreator  
+- FileSystemAdapter  
+
+**Stage 2 — Solution Preparation**
+- LanguageDetector  
+- SolutionFileNameResolver  
+- FileCopier  
+
+**Stage 3 — README Generation**
+- TemplateLoader  
+- ReadmeGenerator  
+- LeetCodeTemplate / NormalTemplate  
+
+**Stage 4 — Screenshot Handling**
+- ScreenshotHandler  
+- File normalization and validation  
+
+**Stage 5 — Git Transaction**
+- DefaultBranchDetector  
+- GitService  
+- PRGenerator  
+- Git CLI execution  
+- Push to GitHub  
+
+---
+
+#### 5. Infrastructure Layer
+- File system abstraction  
+- Git automation layer  
+- VS Code API adapter  
+- Settings repository (memory persistence)  
+
+---
+
+#### 6. Atomic Execution Model
+
+GitGo enforces:
+
+One Command = One Complete Publish Pipeline
+
+- All stages must succeed  
+- On failure → automatic rollback  
+- No partial repository state  
+- Clear error reporting  
+
+---
+
+### Design Principles
+
+- Deterministic pipeline execution  
+- Strong separation of concerns  
+- Modular stage-based design  
+- Infrastructure abstraction  
+- Zero partial side effects  
+- Idempotent Git operations  
+- Persistent configuration memory  
+
+---
+
 ## Project Status
 
 - Core pipeline complete  
