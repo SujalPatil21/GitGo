@@ -15,7 +15,7 @@ interface FolderOption {
 
 async function navigateFolders(
   basePath: string
-): Promise<string | null> {
+): Promise<string | undefined> {
 
   let currentRelativePath = "";
 
@@ -49,7 +49,7 @@ async function navigateFolders(
     });
 
     if (!choice) {
-      return null;
+      return undefined;
     }
 
     if (choice.value === "__back__") {
@@ -58,7 +58,7 @@ async function navigateFolders(
     }
 
     if (choice.value === "__use__") {
-      return currentRelativePath || null;
+      return currentRelativePath;
     }
 
     if (choice.value === "__create__") {
@@ -95,11 +95,15 @@ async function navigateFolders(
 
 export async function selectParentFolder(
   repoPath: string
-): Promise<string | null> {
+): Promise<string | undefined> {
 
   const config = vscode.workspace.getConfiguration("gitgo");
 
   const selected = await navigateFolders(repoPath);
+
+  if (selected === undefined) {
+    return undefined;
+  }
 
   await config.update(
     CONFIG_KEY,

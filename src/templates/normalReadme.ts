@@ -1,67 +1,78 @@
+import { ScreenshotMetadata } from "../domain/ScreenshotMetadata";
+
 export interface NormalProblemData {
   problemName: string;
-  shortDescription: string;
+  description?: string;
   fileName: string;
   authorName: string;
   github: string;
   linkedin: string;
+  screenshots: ScreenshotMetadata[];
+  language: string;
 }
 
-export function getNormalReadme(
-  data: NormalProblemData
-): string {
+function renderRepositoryContentsTable(fileName: string, screenshots: ScreenshotMetadata[]): string {
+  let md = `## Repository Contents\n\n`;
+  md += `| File | Description |\n`;
+  md += `|--------|-------------|\n`;
+  md += `| ${fileName} | Solution implementation |\n`;
+  md += `| README.md | Problem documentation |\n`;
+  for (const s of screenshots) {
+    let desc = "Program output screenshot";
+    md += `| ${s.targetName} | ${desc} |\n`;
+  }
+  md += `\n`;
+  return md;
+}
 
-return `# ${data.problemName}
+function renderNormalScreenshots(screenshots: ScreenshotMetadata[]): string {
+  const outputScreenshots = screenshots.filter(s => s.type === "output");
+  if (outputScreenshots.length === 0) {
+    return "";
+  }
 
-${data.shortDescription}
+  let md = "## Output\n\n";
+  if (outputScreenshots.length >= 1) {
+    md += `![Program Output](${outputScreenshots[0].targetName})\n\n`;
+  }
+  for (let i = 1; i < outputScreenshots.length; i++) {
+    md += `![Output ${i + 1}](${outputScreenshots[i].targetName})\n\n`;
+  }
+  md += "---\n\n";
+  return md;
+}
 
----
+function renderAuthorSection(name: string, github: string, linkedin: string): string {
+  let md = `## Author\n\n`;
+  md += `${name}\n\n`;
+  if (github) {
+    const cleanGithub = github.trim().replace(/^https?:\/\/(www\.)?github\.com\//, "");
+    md += `GitHub:\nhttps://github.com/${cleanGithub}\n\n`;
+  }
+  if (linkedin) {
+    let url = linkedin.trim();
+    if (!url.startsWith("http")) {
+      url = `https://linkedin.com/in/${url}`;
+    }
+    md += `LinkedIn:\n${url}\n\n`;
+  }
+  return md;
+}
 
-## 📌 Program Overview
+export function getNormalReadme(data: NormalProblemData): string {
+  const repositoryContentsTable = renderRepositoryContentsTable(data.fileName, data.screenshots);
+  const screenshotsSection = renderNormalScreenshots(data.screenshots);
+  const authorSection = renderAuthorSection(data.authorName, data.github, data.linkedin);
 
-This program demonstrates a basic implementation of the given problem using standard programming constructs.
+  let md = `# ${data.problemName}\n\n`;
+  if (data.description && data.description.trim() !== "") {
+    md += `${data.description.trim()}\n\n`;
+  }
+  md += `---\n\n`;
+  md += repositoryContentsTable;
+  md += `---\n\n`;
+  md += screenshotsSection;
+  md += authorSection;
 
-It focuses on applying logical conditions and structured control flow to achieve the required functionality.
-
----
-
-## 🧪 Code Functionality
-
-- Accepts required input values  
-- Processes the input using defined logic  
-- Performs necessary validations or computations  
-- Displays the final output  
-
----
-
-## 🧠 Concepts Covered
-
-- Input / Output handling  
-- Conditional logic  
-- Iteration / looping  
-- Functions or procedures  
-- Basic algorithmic reasoning  
-
----
-
-## 🖥️ Output
-
-![Program Output](Output.png)
-
----
-
-## 📂 File Information
-
-- \`${data.fileName}\`
-- Output.png
-- README.md
-
----
-
-## 👨‍💻 Author
-
-${data.authorName}  
-GitHub: ${data.github}  
-LinkedIn: ${data.linkedin}
-`;
+  return md;
 }

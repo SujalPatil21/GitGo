@@ -5,6 +5,7 @@ import { getLeetCodeReadme } from "../templates/leetcodeReadme";
 import { getNormalReadme } from "../templates/normalReadme";
 import { Result } from "../domain/Result";
 import { Author } from "../domain/Author";
+import { ScreenshotMetadata } from "../domain/ScreenshotMetadata";
 
 export function generateReadme(
   folderPath: string,
@@ -15,34 +16,38 @@ export function generateReadme(
   executionTime: string,
   difficulty: string,
   solutionFileName: string,
-  author: Author
+  author: Author,
+  screenshots: ScreenshotMetadata[],
+  description?: string
 ): Result<void> {
 
   try {
     let content = "";
 
     if (problemType === ProblemType.LEETCODE) {
-content = getLeetCodeReadme({
-  problemName: problemName,
-  language: language,
-  difficulty: difficulty,
-  executionTime: executionTime,
-  solutionFile: solutionFileName,
-  authorName: author.name,
-  github: author.github,
-  linkedin: author.linkedin
-});
-
+      content = getLeetCodeReadme({
+        problemName: problemName,
+        language: language,
+        difficulty: difficulty,
+        executionTime: executionTime,
+        solutionFile: solutionFileName,
+        authorName: author.name,
+        github: author.github,
+        linkedin: author.linkedin,
+        screenshots: screenshots
+      });
 
     } else {
 
       content = getNormalReadme({
         problemName: problemName,
-        shortDescription: "Solution implementation",
+        description: description,
         fileName: solutionFileName,
         authorName: author.name,
         github: author.github,
-        linkedin: author.linkedin
+        linkedin: author.linkedin,
+        screenshots: screenshots,
+        language: language
       });
 
     }
@@ -60,3 +65,4 @@ content = getLeetCodeReadme({
     };
   }
 }
+

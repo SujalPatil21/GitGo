@@ -43,6 +43,14 @@
       {
         "command": "gitgo.changeRepository",
         "title": "GitGo: Change Repository"
+      },
+      {
+        "command": "gitgo.configureDashboard",
+        "title": "GitGo: Configure Dashboard"
+      },
+      {
+        "command": "gitgo.syncDashboard",
+        "title": "GitGo: Sync Dashboard"
       }
     ],
 
@@ -92,6 +100,15 @@
           "type": "string",
           "default": "",
           "description": "Last selected parent folder for publishing solutions"
+        },
+
+        "gitgo.dashboard.trackedFolders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Folders in the repository to track for the Progress Dashboard"
         }
 
       }

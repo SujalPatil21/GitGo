@@ -1,5 +1,7 @@
 import * as vscode from "vscode";
-import { execSync } from "child_process";
+import { getDefaultBranch } from "./defaultBranchDetector";
+import { runGitCommand } from "./git/GitCommandRunner";
+import { isValidRepoUrl } from "./inputValidator";
 
 export async function setupRepository(): Promise<string> {
 
@@ -23,6 +25,10 @@ export async function setupRepository(): Promise<string> {
             throw new Error("Repository URL required");
         }
 
+        if (!isValidRepoUrl(repoUrl)) {
+            throw new Error("Invalid repository URL format. Please provide a valid HTTPS or SSH GitHub repository URL.");
+        }
+
         const folderUri = await vscode.window.showOpenDialog({
             canSelectFolders: true,
             openLabel: "Select parent folder"
@@ -34,10 +40,15 @@ export async function setupRepository(): Promise<string> {
 
         const parentPath = folderUri[0].fsPath;
 
-        execSync(`git clone ${repoUrl}`, {
-            cwd: parentPath,
-            stdio: "inherit"
-        });
+        const cloneResult = runGitCommand(
+            ["clone", repoUrl],
+            parentPath,
+            120000
+        );
+
+        if (!cloneResult.ok) {
+            throw new Error(cloneResult.message);
+        }
 
         // Repo name extracted from URL
         const repoName = repoUrl.split("/").pop()!.replace(".git", "");
@@ -55,11 +66,18 @@ export async function setupRepository(): Promise<string> {
     }
 
     const repoPath = folderUri[0].fsPath;
+    const defaultBranchResult = getDefaultBranch(repoPath);
+    const defaultBranch = defaultBranchResult.ok ? defaultBranchResult.data : "main";
 
-    execSync("git pull origin main", {
-        cwd: repoPath,
-        stdio: "inherit"
-    });
+    const pullResult = runGitCommand(
+        ["pull", "origin", defaultBranch],
+        repoPath,
+        60000
+    );
+
+    if (!pullResult.ok) {
+        throw new Error(pullResult.message);
+    }
 
     return repoPath;
 }
