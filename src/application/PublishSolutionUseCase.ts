@@ -46,23 +46,21 @@ export class PublishSolutionUseCase {
 
     // 3. Auto sync dashboard
     try {
-      const config = vscode.workspace.getConfiguration("gitgo");
-      const trackedFolders = config.get<string[]>("dashboard.trackedFolders") || [];
+      const leetcodePath = path.join(request.repoPath, "LeetCode");
+      let targetDir: string;
+      let scanFolders: string[];
 
-      if (trackedFolders.length === 0) {
-        const problems = scanRepository(request.repoPath, []);
-        const dashboardMarkdown = generateDashboardMarkdown(problems, "Progress Dashboard");
-        writeDashboardToReadme(request.repoPath, dashboardMarkdown);
+      if (fs.existsSync(leetcodePath) && fs.statSync(leetcodePath).isDirectory()) {
+        targetDir = leetcodePath;
+        scanFolders = ["LeetCode"];
       } else {
-        for (const folder of trackedFolders) {
-          const folderPath = path.join(request.repoPath, folder);
-          if (fs.existsSync(folderPath) && fs.statSync(folderPath).isDirectory()) {
-            const problems = scanRepository(request.repoPath, [folder]);
-            const dashboardMarkdown = generateDashboardMarkdown(problems, `${folder} Progress`);
-            writeDashboardToReadme(folderPath, dashboardMarkdown);
-          }
-        }
+        targetDir = request.repoPath;
+        scanFolders = [];
       }
+
+      const problems = scanRepository(request.repoPath, scanFolders);
+      const dashboardMarkdown = generateDashboardMarkdown(problems, "LeetCode Progress");
+      writeDashboardToReadme(targetDir, dashboardMarkdown);
     } catch (err: any) {
       vscode.window.showWarningMessage(`Solution published successfully, but dashboard sync failed: ${err.message}`);
     }

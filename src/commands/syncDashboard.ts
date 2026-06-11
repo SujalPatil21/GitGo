@@ -44,22 +44,21 @@ export async function syncDashboard() {
     },
     async () => {
       try {
-        const trackedFolders = config.get<string[]>("dashboard.trackedFolders") || [];
+        const leetcodePath = path.join(basePath!, "LeetCode");
+        let targetDir: string;
+        let scanFolders: string[];
 
-        if (trackedFolders.length === 0) {
-          const problems = scanRepository(basePath!, []);
-          const dashboardMarkdown = generateDashboardMarkdown(problems, "Progress Dashboard");
-          writeDashboardToReadme(basePath!, dashboardMarkdown);
+        if (fs.existsSync(leetcodePath) && fs.statSync(leetcodePath).isDirectory()) {
+          targetDir = leetcodePath;
+          scanFolders = ["LeetCode"];
         } else {
-          for (const folder of trackedFolders) {
-            const folderPath = path.join(basePath!, folder);
-            if (fs.existsSync(folderPath) && fs.statSync(folderPath).isDirectory()) {
-              const problems = scanRepository(basePath!, [folder]);
-              const dashboardMarkdown = generateDashboardMarkdown(problems, `${folder} Progress`);
-              writeDashboardToReadme(folderPath, dashboardMarkdown);
-            }
-          }
+          targetDir = basePath!;
+          scanFolders = [];
         }
+
+        const problems = scanRepository(basePath!, scanFolders);
+        const dashboardMarkdown = generateDashboardMarkdown(problems, "LeetCode Progress");
+        writeDashboardToReadme(targetDir, dashboardMarkdown);
 
         vscode.window.showInformationMessage("Progress Dashboard synchronized successfully.");
       } catch (err: any) {
