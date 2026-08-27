@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GitGo - Interview Learning Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: #334155;
+      background-color: #f8fafc;
+      line-height: 1.35;
+      font-size: 10.2px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 10mm 12mm;
+      background-color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header-left h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .header-left h1 span {
+      color: #f05032;
+    }
+
+    .header-left p {
+      font-size: 9.5px;
+      color: #64748b;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .page-num {
+      font-size: 9px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    /* Question & Answer Sections */
+    .qa-section {
+      margin-bottom: 10px;
+    }
+
+    .question {
+      font-size: 11px;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      border-left: 3px solid #f05032;
+      padding-left: 6px;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+    }
+
+    .question span {
+      color: #f05032;
+      margin-right: 5px;
+    }
+
+    .answer {
+      font-size: 10px;
+      color: #475569;
+      margin-bottom: 6px;
+      padding-left: 9px;
+    }
+
+    .highlight-box {
+      background-color: #fdf5f2;
+      border-left: 3px solid #fbcbc3;
+      padding: 6px 10px;
+      margin: 5px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .highlight-box p {
+      font-size: 9.5px;
+      color: #c2410c;
+      font-weight: 600;
+    }
+
+    /* Layout Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 6px 8px;
+      background-color: #f8fafc;
+    }
+
+    .card.accent {
+      background-color: #fdf5f2;
+      border-color: #fbcbc3;
+    }
+
+    .card h3 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Diagram Styles */
+    .flow-horizontal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f1f5f9;
+      padding: 6px 8px;
+      border-radius: 5px;
+      margin: 5px 0;
+      font-weight: 600;
+      font-size: 8.5px;
+    }
+
+    .flow-node {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 2px 4px;
+      border-radius: 3px;
+      color: #334155;
+    }
+
+    .flow-node.active {
+      background: #f05032;
+      color: #ffffff;
+      border-color: #d43f25;
+    }
+
+    .arrow {
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    .vertical-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 6px;
+      border-radius: 5px;
+      margin: 5px 0;
+    }
+
+    .vertical-step {
+      display: flex;
+      align-items: center;
+      font-size: 9px;
+      padding: 2px 4px;
+    }
+
+    .step-number {
+      background: #e2e8f0;
+      color: #475569;
+      font-weight: 800;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 6px;
+      font-size: 8.5px;
+    }
+
+    .vertical-step.success .step-number {
+      background: #def7ec;
+      color: #03543f;
+    }
+
+    .code-symbol {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f1f5f9;
+      padding: 1px 3px;
+      border-radius: 3px;
+      font-size: 8.5px;
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    /* Rapid Fire Table/Grid */
+    .rapid-fire-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 12px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 6px 10px;
+    }
+
+    .qa-box {
+      margin-bottom: 2px;
+    }
+
+    .q-text {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+    }
+
+    .a-text {
+      color: #475569;
+      font-size: 8.5px;
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page">
+    <header>
+      <div class="header-left">
+        <h1><span>GitGo</span> Internal Architecture & Interview Guide</h1>
+        <p>Technical Interview Preparation & Systems Walkthrough</p>
+      </div>
+      <div class="page-num">Page 1 of 2</div>
+    </header>
+
+    <div class="content">
+
+      <!-- Q1: WHAT IS GITGO -->
+      <div class="qa-section">
+        <div class="question"><span>Q1.</span> What is GitGo?</div>
+        <div class="answer">
+          <strong>Simple Definition:</strong> A VS Code extension that publishes coding-problem solutions to GitHub using one command.
+          <div class="grid-2" style="margin-top: 5px;">
+            <div class="card">
+              <h3>Manual Process (High Friction)</h3>
+              <div style="font-size: 8.5px; line-height: 1.4; color: #64748b;">
+                Create folder → Copy/rename solution → Write README → Link screenshots → Git add → Git commit → Push to remote → Create PR
+              </div>
+            </div>
+            <div class="card accent">
+              <h3>GitGo Workflow (One Action)</h3>
+              <div style="font-size: 8.5px; line-height: 1.4; color: #c2410c; font-weight: 600;">
+                Run "GitGo: Publish Solution" → Full modular automation pipeline handles execution, Git tasks, and remote sync.
+              </div>
+            </div>
+          </div>
+          <div class="highlight-box">
+            <p>Interview Response: "GitGo is a productivity-focused VS Code extension. It replaces a manual, 8-step solution-publishing ritual with a single command, automating file-system structures, README generation, screenshot attachment, and Git operations (PR or direct push)."</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q2: WHY DID WE BUILD IT -->
+      <div class="qa-section">
+        <div class="question"><span>Q2.</span> Why did we build it?</div>
+        <div class="answer">
+          <strong>Motivation:</strong> Git itself is not the problem; the issue is the <strong>repetitive chore</strong> of documenting and organizing code solutions.
+          Developers often skip publishing solved DSA problems because of the steps involved. GitGo merges these into a single controlled pipeline.
+          <div style="font-weight: 700; color: #0f172a; text-align: center; margin: 3px 0; font-size: 9.5px; letter-spacing: 0.2px;">
+            Key Principle: <span style="color: #f05032;">One Command = One Complete Publish Pipeline</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q3: WHAT IS A VS CODE EXTENSION -->
+      <div class="qa-section">
+        <div class="question"><span>Q3.</span> What is a VS Code extension?</div>
+        <div class="answer">
+          <strong>Simple Definition:</strong> A program running inside VS Code's process boundary to add new commands, configurations, or UI features.
+          <div class="flow-horizontal">
+            <span class="flow-node">VS Code IDE</span>
+            <span class="arrow">→</span>
+            <span class="flow-node active">GitGo Extension Host Process</span>
+            <span class="arrow">→</span>
+            <span class="flow-node">Command Handler: "Publish Solution"</span>
+          </div>
+          GitGo runs inside the isolated VS Code <strong>Extension Host Process</strong>, ensuring it doesn't block the editor's main UI thread.
+        </div>
+      </div>
+
+      <!-- Q4: HOW DOES THE COMMAND WORK -->
+      <div class="qa-section">
+        <div class="question"><span>Q4.</span> How does the GitGo command work internally?</div>
+        <div class="answer">
+          <strong>Flow:</strong> When triggered, the VS Code command router activates GitGo, executing its registered command handler.
+          <ul style="margin: 3px 0 3px 12px; font-size: 9px;">
+            <li><strong>Activation:</strong> Triggered by command IDs mapped in <span class="code-symbol">package.json</span> under <span class="code-symbol">activationEvents</span>.</li>
+            <li><strong>Command Registration:</strong> Hooked in <span class="code-symbol">src/extension.ts</span> via <span class="code-symbol">vscode.commands.registerCommand</span>.</li>
+            <li><strong>Execution Handler:</strong> delegates logic to <span class="code-symbol">src/commands/publishSolution.ts</span>, which requests inputs and calls the pipeline.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Q5: WHAT HAPPENS AFTER "PUBLISH SOLUTION" -->
+      <div class="qa-section">
+        <div class="question"><span>Q5.</span> What happens after I click "Publish Solution"?</div>
+        <div class="answer">
+          <strong>Sequence of Actions:</strong> GitGo executes a linear orchestration flow to prepare, write, and upload the solution.
+          <div class="vertical-flow">
+            <div class="vertical-step success"><span class="step-number">1</span> <strong>Get active file path:</strong> Resolves path and detects language (<span class="code-symbol">src/services/languageDetector.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">2</span> <strong>Collect user input:</strong> Prompts for problem type, difficulty, push mode, screenshots, and custom folder name</div>
+            <div class="vertical-step success"><span class="step-number">3</span> <strong>Build Context:</strong> Runs <span class="code-symbol">buildPublishContext</span> to encapsulate configuration data (<span class="code-symbol">PublishContextBuilder.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">4</span> <strong>Directory stage:</strong> Creates the destination problem folder structure on disk (<span class="code-symbol">folderCreator.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">5</span> <strong>Solution stage:</strong> Copies and renames the source solution file to standard format (<span class="code-symbol">fileCopier.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">6</span> <strong>README stage:</strong> Generates and writes documentation containing metadata (<span class="code-symbol">readmeGenerator.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">7</span> <strong>Screenshot stage:</strong> Copies selected screenshots and embeds links in the README (<span class="code-symbol">screenshotHandler.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">8</span> <strong>Git stage:</strong> Stages changes, commits locally, and pushes branch to remote (<span class="code-symbol">gitService.ts</span>)</div>
+            <div class="vertical-step success"><span class="step-number">9</span> <strong>PR or Push execution:</strong> If PR mode, copies description to clipboard and opens the GitHub compare page in browser</div>
+            <div class="vertical-step success"><span class="step-number">10</span> <strong>Dashboard Sync:</strong> Regenerates progress stats and inserts the summary table back into the main README</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q6: WHAT IS PUBLISHCONTEXT -->
+      <div class="qa-section">
+        <div class="question"><span>Q6.</span> What is PublishContext?</div>
+        <div class="answer">
+          <strong>Simple Definition:</strong> A single state object passed through the entire publishing pipeline containing all resolved metadata.
+          Instead of passing 10+ arguments down, the pipeline updates and references this single structured type defined in <span class="code-symbol">src/pipeline/PublishContext.ts</span>:
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 8.5px; background: #f1f5f9; padding: 4px; border-radius: 4px; margin-top: 3px; line-height: 1.25;">
+            { request, language, standardFileName, author, repoPath, destinationFolder, repositoryInfo, screenshots, codeContent, createdDirectory, createdReadme, createdBranch, branchPushed, commitHash }
+          </div>
+        </div>
+      </div>
+
+      <!-- Q7: WHAT IS THE PUBLISH PIPELINE -->
+      <div class="qa-section">
+        <div class="question"><span>Q7.</span> What is the Publish Pipeline?</div>
+        <div class="answer">
+          <strong>Simple Definition:</strong> A sequential workflow controller that runs multiple stages in order.
+          Controlled by the orchestrator <span class="code-symbol">PipelineExecutor.ts</span>, it maps stages directly to dedicated services:
+          <div class="flow-horizontal" style="background-color: #faf5ff; border: 1px solid #e9d5ff;">
+            <span>ValidationStage</span> <span class="arrow">→</span>
+            <span>DirectoryStage</span> <span class="arrow">→</span>
+            <span>SolutionStage</span> <span class="arrow">→</span>
+            <span>ScreenshotStage</span> <span class="arrow">→</span>
+            <span>ReadmeStage</span> <span class="arrow">→</span>
+            <span>GitStage</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <span>GitGo Interview Guide</span>
+      <span>runtime-sync.gitgo</span>
+      <span>Confidential - For Review</span>
+    </footer>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page">
+    <header>
+      <div class="header-left">
+        <h1><span>GitGo</span> Internal Architecture & Interview Guide</h1>
+        <p>Technical Interview Preparation & Systems Walkthrough</p>
+      </div>
+      <div class="page-num">Page 2 of 2</div>
+    </header>
+
+    <div class="content">
+
+      <!-- Q8: WHY MODULAR ARCHITECTURE -->
+      <div class="qa-section">
+        <div class="question"><span>Q8.</span> Why modular architecture? Why not put everything in one function?</div>
+        <div class="answer">
+          <strong>Answer:</strong> Each part of the publishing flow has a distinct, single responsibility. Keeping them separated into stages makes the code base highly maintainable, testable, and robust.
+          <ul style="margin: 3px 0 3px 12px; font-size: 9px;">
+            <li><strong>File Systems logic</strong> (<span class="code-symbol">DirectoryStage</span> / <span class="code-symbol">SolutionStage</span>) is isolated from Git logic.</li>
+            <li><strong>Doc Generation logic</strong> (<span class="code-symbol">ReadmeStage</span>) does not depend on remote network conditions.</li>
+            <li><strong>Single Responsibility Principle (SRP):</strong> Changes in Git commands or README layouts won't break file copy utilities.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Q9: HOW DOES GIT AUTOMATION WORK -->
+      <div class="qa-section">
+        <div class="question"><span>Q9.</span> How does Git automation work internally?</div>
+        <div class="answer">
+          <strong>Answer:</strong> GitGo executes native Git commands using a custom execution runner (<span class="code-symbol">GitCommandRunner.ts</span>) which wraps Node's <span class="code-symbol">child_process.spawnSync</span> with strict timeout and error-parsing mechanisms.
+          <div class="grid-2" style="margin-top: 4px;">
+            <div class="card">
+              <h3>Normal Push Mode Flow</h3>
+              <ol style="margin-left: 10px; font-size: 8.5px; line-height: 1.35;">
+                <li>Checkout default branch (<span class="code-symbol">git checkout &lt;branch&gt;</span>)</li>
+                <li>Pull remote updates (<span class="code-symbol">git pull origin &lt;branch&gt;</span>)</li>
+                <li>Stage files (<span class="code-symbol">git add .</span>)</li>
+                <li>Commit locally (<span class="code-symbol">git commit -m "..."</span>)</li>
+                <li>Push to branch (<span class="code-symbol">git push origin &lt;branch&gt;</span>)</li>
+              </ol>
+            </div>
+            <div class="card">
+              <h3>Pull Request Mode Flow</h3>
+              <ol style="margin-left: 10px; font-size: 8.5px; line-height: 1.35;">
+                <li>Clean old local/remote branch if any</li>
+                <li>Create feature branch (<span class="code-symbol">git checkout -b &lt;branch&gt;</span>)</li>
+                <li>Stage and commit changes</li>
+                <li>Push branch (<span class="code-symbol">git push -u origin &lt;branch&gt;</span>)</li>
+                <li>Copy PR desc to clipboard & open PR Compare page</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q10: WHAT IS DEFAULT BRANCH DETECTION -->
+      <div class="qa-section">
+        <div class="question"><span>Q10.</span> How does Default Branch Detection work?</div>
+        <div class="answer">
+          <strong>Answer:</strong> GitGo uses the <span class="code-symbol">defaultBranchDetector.ts</span> module to query the repository dynamically rather than assuming "main" or "master":
+          <ol style="margin-left: 12px; font-size: 8.5px; margin-top: 3px;">
+            <li>Tries to read symbolic reference: <span class="code-symbol">git symbolic-ref refs/remotes/origin/HEAD</span></li>
+            <li>Queries remote metadata: matches "HEAD branch" output from <span class="code-symbol">git remote show origin</span></li>
+            <li>Checks local lists: searches local branch lists for common names (<span class="code-symbol">main</span>, <span class="code-symbol">master</span>, <span class="code-symbol">develop</span>)</li>
+            <li>Resolves current active branch: <span class="code-symbol">git rev-parse --abbrev-ref HEAD</span></li>
+            <li>Ultimate fallback: Defaults to <span class="code-symbol">"main"</span> if all else fails.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Q11: WHAT DOES ATOMIC / TRANSACTIONAL MEAN -->
+      <div class="qa-section">
+        <div class="question"><span>Q11.</span> What does atomic / transactional execution mean here?</div>
+        <div class="answer">
+          <strong>Concept:</strong> "All-or-nothing" execution. If a stage fails (e.g. network push fails), the repository must not be left in a corrupted or partially modified state.
+          <div class="flow-horizontal" style="background-color: #ecfdf5; border: 1px solid #a7f3d0; margin: 3px 0;">
+            <span style="color: #065f46; font-weight: 700;">Start Pipeline</span>
+            <span class="arrow">→</span>
+            <span>Execute Stages</span>
+            <span class="arrow">→</span>
+            <span style="color: #dc2626; font-weight: 700;">Stage Fails ✗</span>
+            <span class="arrow">→</span>
+            <span style="color: #1e40af; font-weight: 700;">Rollback Executed Stages (Reverse)</span>
+          </div>
+          The <span class="code-symbol">PipelineExecutor</span> records executed stages. If any stage errors out, it calls their <span class="code-symbol">rollback()</span> methods in exact reverse order.
+        </div>
+      </div>
+
+      <!-- Q12: HOW DOES ROLLBACK WORK -->
+      <div class="qa-section">
+        <div class="question"><span>Q12.</span> How does rollback work if something fails?</div>
+        <div class="answer">
+          <strong>Implementation:</strong> The codebase handles localized rollback hooks to clean up local and remote environments:
+          <ul style="margin: 3px 0 3px 12px; font-size: 8.5px; line-height: 1.4;">
+            <li><strong>Directory Cleanup:</strong> If <span class="code-symbol">DirectoryStage</span> created a new folder, it deletes the folder recursively using node <span class="code-symbol">fs.rmSync</span>.</li>
+            <li><strong>Git Reset (Normal Push):</strong> If local commit was created but push failed, it runs <span class="code-symbol">git reset --hard HEAD~1</span> to undo the commit.</li>
+            <li><strong>Git Cleanup (PR Mode):</strong> Checkouts back to base branch, deletes local feature branch (<span class="code-symbol">git branch -D</span>), and attempts remote deletion (<span class="code-symbol">git push origin --delete &lt;branch&gt;</span>).</li>
+            <li><strong>Limitations:</strong> GitGo does not use GitHub APIs directly for PRs, meaning no remote Pull Request object is ever left dangling to delete.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Q13: SETTINGS AND MEMORY -->
+      <div class="qa-section">
+        <div class="question"><span>Q13.</span> How do settings and memory work?</div>
+        <div class="answer">
+          <strong>Implementation:</strong> Saved locally using VS Code's global persistent configuration storage.
+          When a user runs the command, GitGo queries the <span class="code-symbol">vscode.workspace.getConfiguration("gitgo")</span> API.
+          If config fields like <span class="code-symbol">author.name</span>, <span class="code-symbol">repoPath</span>, or <span class="code-symbol">lastParentFolder</span> are missing, it prompts the user and saves the inputs globally back to configuration settings, preventing repetitive entries.
+        </div>
+      </div>
+
+      <!-- Q14: PERFORMANCE -->
+      <div class="qa-section">
+        <div class="question"><span>Q14.</span> Performance: How did we handle 10,000+ problems under 2.3 seconds?</div>
+        <div class="answer">
+          <strong>Verified Benchmark Methodology:</strong> This benchmark measures the **Progress Dashboard Scanner** (<span class="code-symbol">DashboardScanner.ts</span>).
+          It scans the target repo directory for DSA folders, parses problem counts, matches difficulties, and formats the table.
+          The scan runs in linear $O(N)$ time by inspecting leaf-folder directories directly, skipping deeper node modules, parsing paths concurrently, and writing updates via regex replacements.
+          It completes a 10,000-problem folder scan in **2.29 seconds** (speed of 1,200+ folders/sec).
+        </div>
+      </div>
+
+      <!-- RAPID FIRE -->
+      <div class="qa-section" style="margin-bottom: 0;">
+        <div class="question"><span>★</span> Interview Rapid Fire Answers</div>
+        <div class="rapid-fire-grid">
+          <div class="qa-box">
+            <span class="q-text">What is GitGo?</span>
+            <span class="a-text">A VS Code extension automating coding-problem solution publishing.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">Why did you build it?</span>
+            <span class="a-text">To consolidate 8 manual copy/git steps into a single CLI flow.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">What is the Publish Pipeline?</span>
+            <span class="a-text">A sequence of stages executing directory, file, readme, and git tasks.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">What is PublishContext?</span>
+            <span class="a-text">A consolidated state object holding all metadata across pipeline stages.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">Why modular architecture?</span>
+            <span class="a-text">SRP: Separates file system, markdown, validation, and git dependencies.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">What is atomic execution?</span>
+            <span class="a-text">All-or-nothing pipeline: failsafe rollback of local file and branch writes.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">How does rollback work?</span>
+            <span class="a-text">Deletes generated folders and does hard git resets / remote branch deletes.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">Push vs Pull Request?</span>
+            <span class="a-text">Push goes to default branch; PR pushes feature branch & opens browser compare.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">Why default branch detection?</span>
+            <span class="a-text">Repos may use main/master/develop dynamically; symbolic-ref checks this.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">What does 10,000 / 2.3s mean?</span>
+            <span class="a-text">Progress dashboard scanner benchmark speed, traversing 10k folders linearly.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer>
+      <span>GitGo Interview Guide</span>
+      <span>runtime-sync.gitgo</span>
+      <span>Confidential - For Review</span>
+    </footer>
+  </div>
+
+</body>
+</html>

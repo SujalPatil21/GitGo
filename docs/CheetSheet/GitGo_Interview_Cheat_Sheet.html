@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GitGo - Technical Interview Cheat Sheet</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      color: #334155;
+      background-color: #f8fafc;
+      line-height: 1.35;
+      font-size: 10.5px;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    .page {
+      width: 210mm;
+      height: 297mm;
+      padding: 12mm 14mm;
+      background-color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+    }
+
+    .page:last-child {
+      page-break-after: avoid;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .header-left h1 {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+    }
+
+    .header-left h1 span {
+      color: #f05032;
+    }
+
+    .header-left p {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .page-num {
+      font-size: 9px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    /* Titles */
+    h2 {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      margin-top: 8px;
+      margin-bottom: 5px;
+      border-left: 3px solid #f05032;
+      padding-left: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Layout Grids */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 6px 9px;
+      background-color: #f8fafc;
+    }
+
+    .card.highlight {
+      background-color: #fdf5f2;
+      border-color: #fbcbc3;
+    }
+
+    .card h3 {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+
+    /* Lists */
+    ul {
+      list-style-type: none;
+    }
+
+    li {
+      position: relative;
+      padding-left: 9px;
+      margin-bottom: 2px;
+    }
+
+    li::before {
+      content: "•";
+      color: #f05032;
+      font-weight: bold;
+      position: absolute;
+      left: 0;
+    }
+
+    /* Diagrams */
+    .flow-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #f1f5f9;
+      padding: 6px 10px;
+      border-radius: 5px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 9px;
+    }
+
+    .flow-step {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 2.5px 5px;
+      border-radius: 3px;
+      color: #334155;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .flow-step.active {
+      background: #f05032;
+      color: #ffffff;
+      border-color: #d43f25;
+    }
+
+    .arrow {
+      color: #94a3b8;
+      font-weight: bold;
+    }
+
+    /* Simple Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 6px;
+    }
+
+    th,
+    td {
+      border: 1px solid #e2e8f0;
+      padding: 4px 6px;
+      text-align: left;
+      font-size: 9.5px;
+    }
+
+    th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 700;
+    }
+
+    .accent-text {
+      color: #f05032;
+      font-weight: 600;
+    }
+
+    .code-term {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: #f1f5f9;
+      padding: 1px 3px;
+      border-radius: 3px;
+      font-size: 8.5px;
+      color: #0f172a;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 5px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 8.5px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    /* Page 2 specifics */
+    .rapid-fire-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 10px;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 7px 9px;
+    }
+
+    .qa-box {
+      margin-bottom: 1px;
+    }
+
+    .q-text {
+      font-weight: 700;
+      color: #0f172a;
+      font-size: 9px;
+    }
+
+    .a-text {
+      color: #475569;
+      font-size: 9px;
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* Metrics Hero */
+    .metrics-container {
+      display: flex;
+      justify-content: space-around;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-left: 4px solid #f05032;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 5px;
+      margin-bottom: 6px;
+    }
+
+    .metric-item {
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+    }
+
+    .metric-value span {
+      color: #f05032;
+    }
+
+    .metric-label {
+      font-size: 8.5px;
+      opacity: 0.85;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.2px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ================= PAGE 1 ================= -->
+  <div class="page" id="page1">
+    <div>
+      <header>
+        <div class="header-left">
+          <h1>GitGo <span>Publish Pipeline</span></h1>
+          <p>Technical Interview Quick Revision Guide</p>
+        </div>
+        <span class="page-num">Page 1 of 2</span>
+      </header>
+
+      <!-- 1. CORE IDEA -->
+      <section>
+        <h2>1. Core Idea</h2>
+        <div class="grid-2">
+          <div class="card">
+            <h3>The Problem</h3>
+            <p>Publishing solved coding problems to GitHub manually is tedious. It requires: creating folders, copying/renaming files, writing README documentation, placing screenshots, initializing/managing git branches, making commits, and opening pull requests.</p>
+          </div>
+          <div class="card highlight">
+            <h3>The Solution</h3>
+            <p><strong>One VS Code command &rarr; Complete publishing workflow.</strong></p>
+            <p class="accent-text" style="margin: 2px 0;">Write Code &rarr; Run "GitGo: Publish Solution" &rarr; Done</p>
+            <h3 style="margin-top: 4px; margin-bottom: 1px;">30-Second Interview Answer</h3>
+            <p style="font-style: italic; color: #475569;">
+              "GitGo is a VS Code extension built in TypeScript that automates the entire process of saving and publishing coding solutions to GitHub. With a single command, it handles folder creation, template-based README generation, file-renaming, screenshot handling, and Git operations (including branch creation and PR generation) as a single rollback-safe operation."
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. MAIN TECHNOLOGIES -->
+      <section>
+        <h2>2. Main Technologies</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 25%;">Technology</th>
+              <th>What we use it for</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>TypeScript</strong></td>
+              <td>Write the extension with static type safety, reducing runtime errors across stages.</td>
+            </tr>
+            <tr>
+              <td><strong>VS Code Extension API</strong></td>
+              <td>Add the GitGo commands directly to VS Code host, register commands, and interact with the editor context.</td>
+            </tr>
+            <tr>
+              <td><strong>Node.js</strong></td>
+              <td>Run the extension logic, handle the filesystem, and execute child processes for CLI automation.</td>
+            </tr>
+            <tr>
+              <td><strong>Git CLI</strong></td>
+              <td>Automate Git repository operations (status check, branch switching, committing, pushing, PR creation).</td>
+            </tr>
+            <tr>
+              <td><strong>esbuild</strong></td>
+              <td>Bundle the extension files into a fast, single-file distribution for distribution.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 3. HOW GITGO WORKS -->
+      <section>
+        <h2>3. Publishing Flow</h2>
+        <div class="flow-line">
+          <div class="flow-step">Open solution</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step">Run "Publish Solution"</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step">Collect information</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step">Create folder + prepare solution</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step">Generate README</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step">Handle screenshots</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step">Git commit + push / PR</div>
+          <div class="arrow">&darr;</div>
+          <div class="flow-step active">Published</div>
+        </div>
+      </section>
+
+      <!-- 4. MAIN COMPONENTS -->
+      <section>
+        <h2>4. Main Components & Responsibilities</h2>
+        <div class="card" style="margin-bottom: 6px;">
+          <p style="font-weight: 500; margin-bottom: 4px;"><strong>Architectural Principle:</strong> "Each part has one responsibility instead of one huge function doing everything."</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Entry Layer</h3>
+            <p><strong>VS Code Extension Host</strong></p>
+            <p style="color: #64748b; font-size: 9px; margin-bottom: 3px;">Command activation & registration</p>
+            <p><strong>VS Code Command</strong></p>
+            <p style="color: #64748b; font-size: 9px;">"User starts GitGo"</p>
+          </div>
+          <div class="card highlight">
+            <h3>Application Layer</h3>
+            <p><strong>Publish Pipeline Orchestrator</strong></p>
+            <p style="color: #64748b; font-size: 9px; margin-bottom: 3px;">`controls the workflow`</p>
+            <p>Coordinates all stages in order. Ensures rollback safety if any step fails.</p>
+          </div>
+          <div class="card">
+            <h3>Pipeline Stages</h3>
+            <p><strong>FolderCreator</strong></p>
+            <p style="color: #64748b; font-size: 9px; margin-bottom: 2px;">`creates the problem folder`</p>
+            <p><strong>ReadmeGenerator</strong></p>
+            <p style="color: #64748b; font-size: 9px; margin-bottom: 2px;">`creates README`</p>
+            <p><strong>GitService</strong></p>
+            <p style="color: #64748b; font-size: 9px;">`handles Git operations`</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <span>GitGo Interview Revision Sheet | Page 1</span>
+      <span>Confidential &copy; 2026</span>
+    </footer>
+  </div>
+
+  <!-- ================= PAGE 2 ================= -->
+  <div class="page" id="page2">
+    <div>
+      <header>
+        <div class="header-left">
+          <h1>GitGo <span>Internal Mechanics & QA</span></h1>
+          <p>Atomic Pipeline, Git Automation, and Technical Rapid-Fire</p>
+        </div>
+        <span class="page-num">Page 2 of 2</span>
+      </header>
+
+      <div class="grid-2">
+        <!-- 5. PUBLISH CONTEXT -->
+        <section>
+          <h2>5. Publish Context</h2>
+          <div class="card">
+            <p>Instead of passing many separate arguments, GitGo aggregates pipeline state into one object:</p>
+            <div style="text-align: center; margin: 4px 0; font-weight: bold; font-family: 'JetBrains Mono', monospace; font-size: 8.5px;">
+              PublishContext
+            </div>
+            <p style="font-size: 8.5px; color: #475569; text-align: center; margin-bottom: 4px;">
+              [Problem &bull; Language &bull; Folder &bull; Author &bull; Repo &bull; Push Mode]
+            </p>
+            <p style="margin-top: 3px; font-weight: 500;"><strong>Why this matters:</strong></p>
+            <p>"PublishContext gives the different stages a common set of information to work with."</p>
+          </div>
+        </section>
+
+        <!-- 6. ATOMIC PIPELINE / ROLLBACK -->
+        <section>
+          <h2>6. Transactional Pipeline</h2>
+          <div class="card highlight">
+            <p><strong>Problem:</strong> What if Folder is created ✓, README is created ✓, but Git push fails ✗? The repo is left half-finished.</p>
+            <p style="margin-top: 3px;"><strong>Solution:</strong> GitGo treats publishing as one <strong>Transactional/Atomic</strong> operation. If a stage fails, it executes rollbacks in reverse order.</p>
+            <p style="margin-top: 3px; font-weight: 600;">Start &rarr; Execute Stages &rarr; Success? Finish | Fail? Rollback previous changes</p>
+          </div>
+        </section>
+      </div>
+
+      <div class="grid-2">
+        <!-- 7. GIT AUTOMATION -->
+        <section>
+          <h2>7. Git Automation</h2>
+          <div class="card">
+            <p><strong>Normal Push:</strong> Files &rarr; Commit &rarr; Push &rarr; Done</p>
+            <p><strong>PR Mode:</strong> Files &rarr; New Branch &rarr; Commit &rarr; Push &rarr; PR</p>
+            <p style="margin-top: 3px;"><strong>DefaultBranchDetector:</strong> Queries the repository configuration instead of assuming the default branch is <code>main</code> or <code>master</code>.</p>
+          </div>
+        </section>
+
+        <!-- 8. README & FILE AUTOMATION -->
+        <section>
+          <h2>8. README & File Automation</h2>
+          <div class="card">
+            <ul>
+              <li><strong>File Renaming:</strong> Standardizes files according to resolved target naming conventions.</li>
+              <li><strong>ReadmeGenerator:</strong> Uses specific templates for LeetCode (difficulty, runtime) vs Normal problems.</li>
+              <li><strong>ScreenshotHandler:</strong> Attaches and normalizes screenshots.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <div class="grid-2">
+        <!-- 9. MEMORY & SETTINGS -->
+        <section>
+          <h2>9. Memory & Settings</h2>
+          <div class="card">
+            <p>GitGo remembers state to avoid repetitive user inputs:</p>
+            <ul>
+              <li>Repository path</li>
+              <li>Author details</li>
+              <li>Last used parent folder</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- 10. PERFORMANCE -->
+        <section>
+          <h2>10. Performance Benchmark</h2>
+          <div class="metrics-container">
+            <div class="metric-item">
+              <div class="metric-value">10,000+</div>
+              <div class="metric-label">Problem Folders</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">&lt; 2.3s</div>
+              <div class="metric-label">Scan Time</div>
+            </div>
+          </div>
+          <p style="font-size: 8.5px; color: #475569; margin-top: 2px;">
+            <strong>Benchmark detail:</strong> Scalability test for Repository Intelligence scanning a LeetCode structure, showing $O(N)$ linear scaling.
+          </p>
+        </section>
+      </div>
+
+      <!-- 11. RAPID FIRE -->
+      <section>
+        <h2>11. Rapid-Fire Interview QA</h2>
+        <div class="rapid-fire-grid">
+          <div class="qa-box">
+            <span class="q-text">1. What is GitGo?</span>
+            <span class="a-text">A VS Code extension that automates publishing coding-problem solutions to GitHub with one command.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">2. Why did you build it?</span>
+            <span class="a-text">To remove repetitive manual work involved in organizing, documenting, and publishing coding solutions.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">3. What is the Publish Pipeline Orchestrator?</span>
+            <span class="a-text">The component that controls the complete publishing workflow and executes each stage in the correct order.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">4. Why modular architecture?</span>
+            <span class="a-text">Each component has one responsibility, making the system easier to maintain and modify.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">5. What is PublishContext?</span>
+            <span class="a-text">A shared object containing the information required by the different publishing stages.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">6. What happens if a stage fails?</span>
+            <span class="a-text">GitGo handles the failure and rolls back previous changes so there is no partial publish.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">7. Why call it transactional?</span>
+            <span class="a-text">Because the entire publishing workflow is treated as one operation: either it completes successfully or changes are rolled back.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">8. How does GitGo support Pull Requests?</span>
+            <span class="a-text">It creates a branch, commits the solution, pushes the branch, and generates a PR.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">9. How does GitGo know the default branch?</span>
+            <span class="a-text">The DefaultBranchDetector checks the repository instead of assuming `main` or `master`.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">10. Why use TypeScript?</span>
+            <span class="a-text">Because GitGo is a VS Code extension and TypeScript works naturally with the VS Code Extension API and Node.js.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">11. What does GitGo automate?</span>
+            <span class="a-text">File creation, naming, README generation, screenshots, Git operations, branches and PR workflow.</span>
+          </div>
+          <div class="qa-box">
+            <span class="q-text">12. Explain the 10,000+ / 2.3 sec claim.</span>
+            <span class="a-text">It represents the scan time of the Repository Intelligence module, scaling linearly with O(N) file-system queries.</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <span>GitGo Interview Revision Sheet | Page 2</span>
+      <span>Confidential &copy; 2026</span>
+    </footer>
+  </div>
+
+</body>
+</html>

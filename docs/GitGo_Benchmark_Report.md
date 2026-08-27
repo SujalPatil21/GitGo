@@ -2,7 +2,7 @@
 
 This report presents performance metrics, scalability measurements, accuracy validation, and transactional hardening audit results for the **GitGo** VS Code extension.
 
-## 1. Scalability Results
+## 1. Scalability 
 
 The table below measures the scalability of the Repository Intelligence module on LeetCode structures scaling from **100 to 10,000 problems** (totaling up to 20,000 solution and documentation files).
 
@@ -49,7 +49,7 @@ The publish pipeline was benchmarked for transaction execution times and rollbac
 | **1000** | 2.88 | 3.79 | 78.10% | **100.00%** |
 
 ### Hardened Transactional Safety:
-For all failed transactions (due to simulated git network failures), **100% of the created filesystem structures were cleaned up and rolled back**. The rollback success rate is verified on disk.
+For all failed transactions (due to simulated git network failures), **100% of the created filesystem structures were cleaned up and rolled back**.he rollback success rate is verified on disk.
 
 ---
 
